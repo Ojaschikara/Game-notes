@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -8,6 +9,12 @@ function Register(){
     const[email,setEmail] = useState("");
     const[password,setPassword] = useState("");
     const[role,setRole] = useState("");
+    // const [formData, setFormData] = useState({
+    //     name: "",
+    //     email: "",
+    //     password: "",
+    //     role: ""
+    // });
     const navigate = useNavigate();
 
     const handleSubmit= async()=>{
@@ -18,17 +25,19 @@ function Register(){
             role
         }
         try {
-            const response = await fetch("https://game-notes.onrender.com/user/registration",{
-                method:"POST",
-                headers:{
-                    "Content-Type":"application/json"
-                },
-                body: JSON.stringify(payload)
-              
-            });
-            alert(`User Registered Succesfully `);
-            console.log(payload)
-            navigate("/login")
+            const response = await axios.post(
+                "https://game-notes.onrender.com/user/registration",
+                payload, 
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+        
+            alert("User Registered Successfully");
+            console.log(payload);
+            navigate("/login");
         } catch (error) {
             alert("Error Occured")
         }
@@ -39,7 +48,7 @@ function Register(){
     }
     return(
         <div>
-            <h1>Welcome to the Register Page</h1>
+            <h1 >Welcome to the Register Page</h1>
             <input type="text" placeholder="Enter your name" value={name} onChange={(e)=>setName(e.target.value)} />
             <input type="email" placeholder="Enter your email" value={email} onChange={(e)=>setEmail(e.target.value)} />
             <input type="password" placeholder="Enter password" value={password} onChange={(e)=>setPassword(e.target.value)} />
